@@ -1,0 +1,20 @@
+# Включаємо модуль перезапису URL
+RewriteEngine On
+
+# Перенаправлення всіх запитів у папку public
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^(.*)$ public/$1 [L]
+
+# Перенаправлення запитів, які не є файлами або директоріями, на index.php
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Якщо запитуваний файл не існує
+    RewriteCond %{REQUEST_FILENAME} !-f
+    
+    # Якщо запитувана директорія не існує
+    RewriteCond %{REQUEST_FILENAME} !-d
+    
+    # Перенаправлення всіх запитів на public/index.php
+    RewriteRule ^(.*)$ public/index.php [QSA,L]
+</IfModule>
