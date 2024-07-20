@@ -3,8 +3,8 @@
   {
     "psr-4": 
     {
-      "core\\": "vendor/core",
-      "app\\": "app"
+      "Vendor\\Core\\": "vendor/core",
+      "App\\": "app"
     }
   },
   "require": 
