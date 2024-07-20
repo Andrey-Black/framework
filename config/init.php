@@ -2,7 +2,7 @@
 
 define('ROOT', dirname(__DIR__));
 define('DEBUG', 1);
-define('PUBLIC', ROOT . '/public');
+define('PUBLIC_DIR', ROOT . '/public');
 define('APP', ROOT . '/app');
 define('CORE', ROOT . '/vendor/core');
 define('HELPER', ROOT . '/vendor/core/helper');
