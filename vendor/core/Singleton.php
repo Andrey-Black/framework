@@ -1,6 +1,6 @@
 <?php
 
-namespace Vendor\Core;
+namespace Core;
 
 trait Singleton
 {

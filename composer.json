@@ -3,7 +3,7 @@
   {
     "psr-4": 
     {
-      "Vendor\\Core\\": "vendor/core",
+      "Core\\": "vendor/core",
       "App\\": "app"
     }
   },
