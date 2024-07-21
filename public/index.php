@@ -9,4 +9,4 @@ require_once dirname(__DIR__) . '/config/init.php';
 
 new \Core\App();
 
-throw new \Exception('This is a test exception', 404);
+throw new \Exception('Cernal Panic', 404);

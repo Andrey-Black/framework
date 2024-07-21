@@ -1,5 +1,4 @@
 <?php
-
 namespace Core;
 
 class ErrorHandler 
@@ -10,7 +9,6 @@ class ErrorHandler
 
         set_exception_handler([$this, 'exceptionHandler']);
         set_error_handler([$this, 'errorHandler']);
-        ob_start();
         register_shutdown_function([$this, 'fatalErrorHandler']);
     }
 
@@ -21,20 +19,20 @@ class ErrorHandler
         if ($error && in_array($error['type'], [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR], true)) 
         {
             $this->logError($this->formatErrorMessage($error['message'], $error['file'], $error['line']));
-            $this->displayError($error['message'], $error['file'], $error['line'], $error['type']);
+            $this->handleError($error['message'], $error['file'], $error['line'], $error['type']);
         }
     }
 
     public function errorHandler($errNo, $errStr, $errFile, $errLine)
     {
         $this->logError($this->formatErrorMessage($errStr, $errFile, $errLine));
-        $this->displayError($errStr, $errFile, $errLine, $errNo);
+        $this->handleError($errStr, $errFile, $errLine, $errNo);
     }
 
     public function exceptionHandler(\Throwable $e)
     {
         $this->logError($this->formatErrorMessage($e->getMessage(), $e->getFile(), $e->getLine()));
-        $this->displayError($e->getMessage(), $e->getFile(), $e->getLine(), $e->getCode());
+        $this->handleError($e->getMessage(), $e->getFile(), $e->getLine(), $e->getCode());
     }
 
     protected function formatErrorMessage($message, $file, $line)
@@ -47,21 +45,32 @@ class ErrorHandler
         error_log($logMessage, 3, LOGS . '/error.log');
     }
 
-    protected function displayError($errStr, $errFile, $errLine, $response)
+    protected function handleError($errStr, $errFile, $errLine, $response)
+    {
+        $this->setHttpResponseCode($response);
+        $this->displayErrorTemplate($errStr, $errFile, $errLine, $response);
+    }
+
+    protected function setHttpResponseCode($response)
     {
         http_response_code($response);
+    }
 
+    protected function displayErrorTemplate($errStr, $errFile, $errLine, $response)
+    {
         extract(compact('errStr', 'errFile', 'errLine', 'response'));
 
+        $template = $this->getErrorTemplate($response);
+        require $template;
+        exit;
+    }
+
+    protected function getErrorTemplate($response)
+    {
         if ($response === 404 && !DEBUG) 
         {
-            require PUBLIC_DIR . '/error/404.php';
+            return PUBLIC_DIR . '/error/404.php';
         } 
-        else 
-        {
-            require DEBUG ? PUBLIC_DIR . '/error/development.php' : PUBLIC_DIR . '/error/production.php';
-        }
-
-        exit;
+        return DEBUG ? PUBLIC_DIR . '/error/development.php' : PUBLIC_DIR . '/error/production.php';
     }
 }

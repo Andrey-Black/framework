@@ -19,7 +19,6 @@ RUN pecl install xdebug && \
 COPY ./config/ini/*.ini /usr/local/etc/php/conf.d/
 COPY ./config/ssl/*.pem /etc/apache2/ssl/
 COPY ./config/000-default.conf /etc/apache2/sites-available/
-COPY ./config/ini/error.ini /usr/local/etc/php/conf.d/
 
 RUN mkdir -p /var/log/apache2/temp && \
     chown -R www-data:www-data /var/log/apache2/temp
