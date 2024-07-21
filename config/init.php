@@ -1,7 +1,7 @@
 <?php
 
 define('ROOT', dirname(__DIR__));
-define('DEBUG', 1);
+define('DEBUG', 0);
 define('PUBLIC_DIR', ROOT . '/public');
 define('APP', ROOT . '/app');
 define('CORE', ROOT . '/vendor/core');
