@@ -1,20 +1,12 @@
 FROM php:8.3-apache
 
 RUN apt-get update && \
-    apt-get install -y \
-    libzip-dev \
-    unzip \
-    apache2 && \
-    a2enmod ssl && \
-    a2enmod rewrite && \
+    apt-get install -y libzip-dev unzip && \
     docker-php-ext-install zip pdo_mysql && \
-    mkdir -p /etc/apache2/ssl && \
-    mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini" && \
-    apt-get clean && \
+    a2enmod ssl rewrite && \
+    pecl install xdebug && \
+    docker-php-ext-enable xdebug && \
     rm -rf /var/lib/apt/lists/*
-
-RUN pecl install xdebug && \
-    docker-php-ext-enable xdebug
 
 COPY ./config/ini/*.ini /usr/local/etc/php/conf.d/
 COPY ./config/ssl/*.pem /etc/apache2/ssl/
