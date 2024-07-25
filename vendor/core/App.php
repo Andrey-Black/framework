@@ -7,36 +7,45 @@ class App
   
   public static $app;
 
-  public function __construct()
+  public function __construct ()
   {
     $query = trim(urldecode($_SERVER['REQUEST_URI']), '/');
-    new ErrorHandler();
-    self::$app = Registry::getInstance();
-    $this->getParams();
-    Router::dispatch($query);
+
+    new ErrorHandler ();
+
+    self::$app = Registry::getInstance ();
+
+    $this->initializeParams ();
+
+    Router::dispatch ($query);
   }
  
-  private function getConfigFilePath(): string
+  private function getConfigFilePath (): string
   {
     return CONFIG . '/params.php';
   }
 
-  private function loadConfigFile(): array
+  private function checkFileConfigExists (): void
   {
-    $filePath = $this->getConfigFilePath();
-    if (!file_exists($filePath)) 
-    {
-        exit('Error ' . $filePath  . ' not found.');
-    }
-    return require $filePath;
+    file_exists ($filePath = $this->getConfigFilePath ()) ?: exit('Error ' . $filePath . ' not found.');
   }
 
-  protected function getParams()
+  private function loadConfigFile (): array
   {
-      $params = $this->loadConfigFile();
-      foreach($params as $key => $value)
-      {
-        self::$app->setProperty($key, $value);
+    $this->checkFileConfigExists ();
+    return require $this->getConfigFilePath ();
+  }
+
+  protected function initializeParams (): void
+  {
+      $params = $this->loadConfigFile ();
+      $this->setParams ($params);
+  }
+
+  private function setParams (array $params): void
+  {
+      foreach ($params as $key => $value) {
+          self::$app->setProperty ($key, $value);
       }
   }
 
