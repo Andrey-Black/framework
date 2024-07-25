@@ -2,7 +2,7 @@
 
 if (version_compare(phpversion(), '8.0.0', '<')) 
 {
-  exit ('PHP version ' . phpversion() . ' not supported');
+  exit ('Версия PHP ' . phpversion() . ' не может быть ниже 8.0.0');
 }
 
 use Core\Router;
@@ -12,4 +12,3 @@ require_once HELPER . '/functions.php';
 require_once CONFIG . '/routes.php';
 
 new \Core\App();
-

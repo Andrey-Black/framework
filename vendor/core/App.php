@@ -4,20 +4,26 @@ namespace Core;
 
 class App
 {
-  
+  // Хранит экземпляр приложения
   public static $app;
 
   public function __construct ()
   {
+
+    // Получение очищенного URL запроса
     $query = trim(urldecode($_SERVER['REQUEST_URI']), '/');
 
+    // Инициализация обработчика ошибок
     new ErrorHandler ();
 
+     // Получение экземпляра реестра (контейнера зависимостей)
     self::$app = Registry::getInstance ();
 
+      // Инициализация параметров приложения
     $this->initializeParams ();
 
-    Router::dispatch ($query);
+     // Сопоставление маршрута на основе запроса
+    Router::matchRoute ($query);
   }
  
   private function getConfigFilePath (): string
@@ -25,6 +31,7 @@ class App
     return CONFIG . '/params.php';
   }
 
+  // Проверяет наличие конфигурационного файла, завершает выполнение при отсутствии
   private function checkFileConfigExists (): void
   {
     file_exists ($filePath = $this->getConfigFilePath ()) ?: exit('Error ' . $filePath . ' not found.');

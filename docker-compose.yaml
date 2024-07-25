@@ -1,39 +1,40 @@
-version: '3'
+version: '3'  # Указывает версию синтаксиса Docker Compose
+
 services:
   php:
-    build: .
-    container_name: php_8.3
+    build: .  # Строит Docker-образ для PHP из текущей директории, где находится Dockerfile
+    container_name: php_8.3  # Имя контейнера для сервиса PHP
     ports:
-      - "8080:80"
-      - "443:443"
+      - "8080:80"  # Пробрасывает порт 80 контейнера на порт 8080 хоста
+      - "443:443"  # Пробрасывает порт 443 контейнера на порт 443 хоста
     volumes:
-      - ./:/var/www/html
+      - ./:/var/www/html  # Монтирует текущую директорию на /var/www/html в контейнере для обмена данными
 
   db:
-    image: mysql:8.0
-    container_name: mysql_8.0
-    restart: always
+    image: mysql:8.0  # Использует образ MySQL версии 8.0 из Docker Hub
+    container_name: mysql_8.0  # Имя контейнера для сервиса MySQL
+    restart: always  # Перезапускает контейнер в случае сбоя
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: framework_db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root  # Устанавливает пароль для root пользователя MySQL
+      MYSQL_DATABASE: framework_db  # Создает базу данных с именем framework_db
+      MYSQL_USER: user  # Создает нового пользователя MySQL
+      MYSQL_PASSWORD: root  # Устанавливает пароль для нового пользователя
     ports:
-      - "3306:3306"
+      - "3306:3306"  # Пробрасывает порт 3306 контейнера на порт 3306 хоста
     volumes:
-      - db_data:/var/lib/mysql
+      - db_data:/var/lib/mysql  # Монтирует volume db_data для хранения данных базы данных
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin_last
-    restart: always
+    image: phpmyadmin/phpmyadmin  # Использует образ phpMyAdmin из Docker Hub
+    container_name: phpmyadmin_last  # Имя контейнера для сервиса phpMyAdmin
+    restart: always  # Перезапускает контейнер в случае сбоя
     ports:
-      - "8081:80"
+      - "8081:80"  # Пробрасывает порт 80 контейнера на порт 8081 хоста
     environment:
-      PMA_HOST: db
-      MYSQL_ROOT_PASSWORD: root
+      PMA_HOST: db  # Указывает, что phpMyAdmin должен подключаться к контейнеру db
+      MYSQL_ROOT_PASSWORD: root  # Устанавливает пароль для root пользователя MySQL в phpMyAdmin
     depends_on:
-      - db
+      - db  # Обеспечивает, что контейнер phpmyadmin запускается только после контейнера db
 
 volumes:
-  db_data:
+  db_data:  # Определяет volume db_data для постоянного хранения данных базы данных

@@ -4,9 +4,13 @@ namespace Core;
 
 class Router
 {
+     // Хранит все маршруты в формате регулярных выражений
     protected static array $routes = [];
+    
+    // Хранит текущий маршрут после его сопоставления
     protected static array $route = [];
 
+    // Добавляет маршрут в список маршрутов
     public static function add(string $regex, array $route = []): void
     {
         self::$routes[$regex] = $route;
@@ -17,20 +21,13 @@ class Router
         return self::$routes;
     }
 
+
     public static function getRoute(): array
     {
         return self::$route;
     }
 
-    public static function dispatch(string $url): void
-    {
-        if (self::matchRoute($url)) {
-            echo 'OK';
-        } else {
-            echo 'NO';
-        }
-    }
-
+    // Сравнивает URL с маршрутами и устанавливает соответствующий маршрут
     public static function matchRoute(string $url): bool
     {
         foreach (self::$routes as $pattern => $route) {
@@ -44,6 +41,7 @@ class Router
         return false;
     }
 
+    // Проверяет, соответствует ли URL заданному шаблону маршрута
     protected static function matchPattern(string $pattern, string $url, array &$route): bool
     {
         if (preg_match("#{$pattern}#", $url, $matches)) {
@@ -57,6 +55,7 @@ class Router
         return false;
     }
 
+    // Устанавливает значения по умолчанию для маршрута
     protected static function setRouteDefaults(array &$route): void
     {
         if (empty($route['action'])) {
@@ -68,7 +67,7 @@ class Router
             $route['admin_prefix'] .= '\\';
         }
     }
-
+    
     protected static function convertControllerName(array &$route): void
     {
         $route['controller'] = self::upperCamelCase($route['controller']);

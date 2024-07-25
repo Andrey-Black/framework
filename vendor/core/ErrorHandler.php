@@ -5,10 +5,13 @@ class ErrorHandler
 {
     public function __construct ()
     {
+        // Регистрируем уровень отчетности об ошибках
         error_reporting(DEBUG ? -1 : 0);
 
+        // Регистрируем обработчики исключений и ошибок
         set_exception_handler([$this, 'exceptionHandler']);
         set_error_handler([$this, 'errorHandler']);
+        // Регистрируем обработчик фатальных ошибок
         register_shutdown_function([$this, 'fatalErrorHandler']);
     }
 
@@ -18,7 +21,9 @@ class ErrorHandler
 
         if ($error && in_array($error['type'], [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR], true)) 
         {
+            // Логируем ошибку
             $this->logError($this->formatErrorMessage($error['message'], $error['file'], $error['line']));
+            // Обрабатываем ошибку
             $this->handleError($error['message'], $error['file'], $error['line'], $error['type']);
         }
     }
@@ -35,6 +40,7 @@ class ErrorHandler
         $this->handleError($e->getMessage(), $e->getFile(), $e->getLine(), $e->getCode());
     }
 
+    // Форматирует сообщение об ошибке
     protected function formatErrorMessage ($message, $file, $line)
     {
         return sprintf ("[%s] Error: %s in %s on line %d\n", date ('Y-m-d H:i:s'), $message, $file, $line);
@@ -45,6 +51,7 @@ class ErrorHandler
         error_log ($logMessage, 3, LOGS . '/error.log');
     }
 
+    // Устанавливает код ответа HTTP и отображает шаблон ошибки
     protected function handleError ($errStr, $errFile, $errLine, $response): void
     {
         $this->setHttpResponseCode ($response);
@@ -56,6 +63,7 @@ class ErrorHandler
         http_response_code ($response);
     }
 
+    // Отображает шаблон ошибки
     protected function displayErrorTemplate ($errStr, $errFile, $errLine, $response): void
     {
         extract(compact('errStr', 'errFile', 'errLine', 'response'));
@@ -65,6 +73,7 @@ class ErrorHandler
         exit;
     }
 
+    // Возвращает путь к шаблону ошибки в зависимости от кода ответа и режима отладки
     protected function getErrorTemplate ($response)
     {
         if ($response === 404 && !DEBUG) 
