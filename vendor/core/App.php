@@ -2,6 +2,8 @@
 
 namespace Core;
 
+use Helper\Helper;
+
 class App
 {
   // Хранит экземпляр приложения
@@ -13,17 +15,13 @@ class App
     // Получение очищенного URL запроса
     $query = trim(urldecode($_SERVER['REQUEST_URI']), '/');
 
-    // Инициализация обработчика ошибок
-    new ErrorHandler ();
-
-     // Получение экземпляра реестра (контейнера зависимостей)
     self::$app = Registry::getInstance ();
 
-      // Инициализация параметров приложения
+    // Инициализация параметров приложения
     $this->initializeParams ();
 
-     // Сопоставление маршрута на основе запроса
-    Router::matchRoute ($query);
+     // Поиск маршрута на основе запроса
+    Router::findRoute ($query);
   }
  
   private function getConfigFilePath (): string
@@ -34,7 +32,10 @@ class App
   // Проверяет наличие конфигурационного файла, завершает выполнение при отсутствии
   private function checkFileConfigExists (): void
   {
-    file_exists ($filePath = $this->getConfigFilePath ()) ?: exit('Error ' . $filePath . ' not found.');
+    $filePath = $this->getConfigFilePath();
+    if (!file_exists($filePath)) {
+        throw new \RuntimeException ($filePath . ' not found.');
+    }
   }
 
   private function loadConfigFile (): array

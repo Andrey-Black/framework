@@ -14,7 +14,7 @@ trait Singleton
 
   // Возвращает единственный экземпляр класса (или создает его при необходимости)
    // Если экземпляр не существует, создаем новый
-  public static function getInstance () : static
+  public static function getInstance (): static
   {
     return static::$instance ?? static::$instance = new static ();
   }

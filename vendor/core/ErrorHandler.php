@@ -11,7 +11,6 @@ class ErrorHandler
         // Регистрируем обработчики исключений и ошибок
         set_exception_handler([$this, 'exceptionHandler']);
         set_error_handler([$this, 'errorHandler']);
-        // Регистрируем обработчик фатальных ошибок
         register_shutdown_function([$this, 'fatalErrorHandler']);
     }
 
@@ -34,6 +33,7 @@ class ErrorHandler
         $this->handleError ($errStr, $errFile, $errLine, $errNo);
     }
 
+    // Throwable нативный php интерфейс
     public function exceptionHandler (\Throwable $e): void
     {
         $this->logError ($this->formatErrorMessage($e->getMessage(), $e->getFile(), $e->getLine()));

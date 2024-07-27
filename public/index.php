@@ -1,14 +1,17 @@
 <?php
 
-if (version_compare(phpversion(), '8.0.0', '<')) 
-{
-  exit ('Версия PHP ' . phpversion() . ' не может быть ниже 8.0.0');
-}
-
+use Core\App;
+use Core\ErrorHandler;
+use Helper\Helper;
 use Core\Router;
 
 require_once dirname(__DIR__) . '/config/init.php';
-require_once HELPER . '/functions.php';
 require_once CONFIG . '/routes.php';
 
-new \Core\App();
+Helper::checkPhpVersion();
+
+new ErrorHandler();
+new App();
+new Router;
+var_dump(Router::getRoutes());
+

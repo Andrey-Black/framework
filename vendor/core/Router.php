@@ -4,7 +4,7 @@ namespace Core;
 
 class Router
 {
-     // Хранит все маршруты в формате регулярных выражений
+    // Ключом является регулярное выражение для проверки URL, а значением — массив с параметрами маршрута.
     protected static array $routes = [];
     
     // Хранит текущий маршрут после его сопоставления
@@ -28,10 +28,10 @@ class Router
     }
 
     // Сравнивает URL с маршрутами и устанавливает соответствующий маршрут
-    public static function matchRoute(string $url): bool
+    public static function findRoute(string $url): bool
     {
-        foreach (self::$routes as $pattern => $route) {
-            if (self::matchPattern($pattern, $url, $route)) {
+        foreach (self::$routes as $regex => $route) {
+            if (self::matchRegex($regex, $url, $route)) {
                 self::setRouteDefaults($route);
                 self::convertControllerName($route);
                 self::$route = $route;
@@ -42,9 +42,10 @@ class Router
     }
 
     // Проверяет, соответствует ли URL заданному шаблону маршрута
-    protected static function matchPattern(string $pattern, string $url, array &$route): bool
+    // & Передача параметра ссылкой, # органичитель регулярки
+    protected static function matchRegex(string $regex, string $url, array &$route): bool
     {
-        if (preg_match("#{$pattern}#", $url, $matches)) {
+        if (preg_match("#{$regex}#", $url, $matches)) {
             foreach ($matches as $key => $value) {
                 if (is_string($key)) {
                     $route[$key] = $value;

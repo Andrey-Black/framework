@@ -4,7 +4,8 @@
     "psr-4": 
     {
       "Core\\": "vendor/core",
-      "App\\": "app"
+      "App\\": "app",
+      "Helper\\": "app/helpers"
     }
   },
   "require": 
