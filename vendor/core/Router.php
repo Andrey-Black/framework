@@ -2,6 +2,8 @@
 
 namespace Core;
 
+use Helper\Helper;
+
 class Router
 {
     // Ключом является регулярное выражение для проверки URL, а значением — массив с параметрами маршрута.
@@ -16,19 +18,48 @@ class Router
         self::$routes[$regex] = $route;
     }
 
-    public static function getRoutes(): array
+    public static function getRoutes (): array
     {
         return self::$routes;
     }
 
 
-    public static function getRoute(): array
+    public static function getRoute (): array
     {
         return self::$route;
     }
 
-    // Сравнивает URL с маршрутами и устанавливает соответствующий маршрут
-    public static function findRoute(string $url): bool
+    public static function dispatch ($url)
+    {
+        if (self::findRoute($url))
+        {
+            $controller = 'App\controllers\\' . self::$route['admin_prefix'] . self::$route['controller'] . 'Controller';
+            
+            if ((class_exists($controller))) {
+            $controllerObject = new $controller(self::$route);
+            $action = self::lowerCamelCase(self::$route['action'] . 'Action');
+
+            if (method_exists($controllerObject, $action))
+            {
+                $controllerObject->$action();
+            }
+            else
+            {
+                throw new \Exception("Method {$controller}::{$action} not found", 404);
+            }
+            }
+            else
+            {
+                throw new \Exception("Controller {$controller} not found", 404);
+            }
+        }
+        else
+        {
+            throw new \Exception('Page not found', 404);
+        }
+    }
+
+    public static function findRoute (string $url): bool
     {
         foreach (self::$routes as $regex => $route) {
             if (self::matchRegex($regex, $url, $route)) {
@@ -43,7 +74,7 @@ class Router
 
     // Проверяет, соответствует ли URL заданному шаблону маршрута
     // & Передача параметра ссылкой, # органичитель регулярки
-    protected static function matchRegex(string $regex, string $url, array &$route): bool
+    protected static function matchRegex (string $regex, string $url, array &$route): bool
     {
         if (preg_match("#{$regex}#", $url, $matches)) {
             foreach ($matches as $key => $value) {
@@ -57,7 +88,7 @@ class Router
     }
 
     // Устанавливает значения по умолчанию для маршрута
-    protected static function setRouteDefaults(array &$route): void
+    protected static function setRouteDefaults (array &$route): void
     {
         if (empty($route['action'])) {
             $route['action'] = 'index';
@@ -69,18 +100,18 @@ class Router
         }
     }
     
-    protected static function convertControllerName(array &$route): void
+    protected static function convertControllerName (array &$route): void
     {
-        $route['controller'] = self::upperCamelCase($route['controller']);
+        $route['controller'] = self::upperCamelCase ($route['controller']);
     }
 
-    protected static function upperCamelCase(string $name): string
+    protected static function upperCamelCase (string $name): string
     {
         return str_replace(' ', '', ucwords(str_replace('-', ' ', $name)));
     }
 
-    protected static function lowerCamelCase(string $name): string
+    protected static function lowerCamelCase (string $name): string
     {
-        return lcfirst(self::upperCamelCase($name));
+        return lcfirst(self::upperCamelCase ($name));
     }
 }

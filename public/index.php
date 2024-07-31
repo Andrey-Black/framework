@@ -13,5 +13,3 @@ Helper::checkPhpVersion();
 new ErrorHandler();
 new App();
 new Router;
-var_dump(Router::getRoutes());
-

@@ -21,7 +21,7 @@ class App
     $this->initializeParams ();
 
      // Поиск маршрута на основе запроса
-    Router::findRoute ($query);
+    Router::dispatch ($query);
   }
  
   private function getConfigFilePath (): string
