@@ -4,7 +4,7 @@
     "psr-4": 
     {
       "Core\\": "vendor/core",
-      "App\\": "app",
+      "App\\Controllers\\": "app/controllers",
       "Helper\\": "app/helpers"
     }
   },

@@ -17,7 +17,7 @@ class ComposerStaticInit8d070178755c320c69f93ee4800660ef
         ),
         'A' => 
         array (
-            'App\\' => 4,
+            'App\\Controllers\\' => 16,
         ),
     );
 
@@ -30,9 +30,9 @@ class ComposerStaticInit8d070178755c320c69f93ee4800660ef
         array (
             0 => __DIR__ . '/..' . '/core',
         ),
-        'App\\' => 
+        'App\\Controllers\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/app',
+            0 => __DIR__ . '/../..' . '/app/controllers',
         ),
     );
 

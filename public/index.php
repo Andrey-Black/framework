@@ -10,6 +10,6 @@ require_once CONFIG . '/routes.php';
 
 Helper::checkPhpVersion();
 
-new ErrorHandler();
-new App();
+new ErrorHandler;
+new App;
 new Router;
