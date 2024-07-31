@@ -45,11 +45,13 @@ public static function dispatch ($url): void
 protected static function handleController (): void
 {
     $controller = 'App\\Controllers\\' . self::$route['admin_prefix'] . self::$route['controller'] . 'Controller';
+
     if (!class_exists($controller)) {
         self::handleNotFound("Controller {$controller} not found");
     }
 
     $controllerObject = new $controller(self::$route);
+    
     $action = self::lowerCamelCase(self::$route['action'] . 'Action');
 
     if (!method_exists($controllerObject, $action)) {
