@@ -6,7 +6,7 @@ class MainController
 {
 public function indexAction ()
 {
-  echo __METHOD__;
+  echo 'ADMIN <br>' . __METHOD__;
 }
 
 }

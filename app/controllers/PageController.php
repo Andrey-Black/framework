@@ -2,9 +2,9 @@
 
 namespace App\Controllers;
 
-class MainController
+class PageController
 {
-public function indexAction ()
+public function viewAction ()
 {
   echo '<br>' . __METHOD__;
 }

@@ -4,11 +4,6 @@ namespace Helper;
 
 class Helper
 {
-public static function debug ($data, $exit = false)
-{
-  echo '<pre>' . print_r($data, 1) . '</pre>';
-  if ($exit) exit();
-}
 
 public static function checkPhpVersion ()
 {
@@ -18,4 +13,10 @@ public static function checkPhpVersion ()
   }
 }
 
+}
+
+function dd ($data, $exit = false)
+{
+  echo '<pre>' . print_r($data, 1) . '</pre>';
+  if ($exit) exit();
 }

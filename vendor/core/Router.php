@@ -2,7 +2,7 @@
 
 namespace Core;
 
-use Helper\Helper;
+use function Helper\dd;
 
 class Router
 {
@@ -30,8 +30,23 @@ public static function getRoute (): array
     return self::$route;
 }
 
-public static function dispatch ($url): void
+protected static function removeQueryString ($url)
 {
+    if ($url)
+    {
+        $params = explode('?', $url, 2);
+        if(false === str_contains($params[0], '='))
+        {
+            return rtrim($params[0], '/');
+        }
+
+    }
+    return '';
+}
+
+public static function dispatch ($url): void
+{   
+    $url = self::removeQueryString($url);
     if (self::findRoute($url)) 
     {
         self::handleController();
@@ -51,7 +66,7 @@ protected static function handleController (): void
     }
 
     $controllerObject = new $controller(self::$route);
-    
+
     $action = self::lowerCamelCase(self::$route['action'] . 'Action');
 
     if (!method_exists($controllerObject, $action)) {

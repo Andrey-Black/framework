@@ -60,7 +60,10 @@ protected function handleError ($errStr, $errFile, $errLine, $response): void
 
 protected function setHttpResponseCode ($response): void
 {
-    http_response_code ($response);
+    if (!headers_sent()) 
+    {
+        http_response_code ($response);
+    }
 }
 
 // Отображает шаблон ошибки
