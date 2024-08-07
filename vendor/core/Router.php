@@ -56,6 +56,11 @@ public static function dispatch ($url): void
     {
         self::handleNotFound('Page not found');
     }
+
+    /** @var Controller $controllerObject */
+
+
+
 }
 
 protected static function handleController (): void
@@ -67,7 +72,11 @@ protected static function handleController (): void
         self::handleNotFound ("Controller {$controller} not found");
     }
 
+    /** @var Controller $controllerObject */
+
     $controllerObject = new $controller(self::$route);
+
+    $controllerObject->getModel();
 
     $action = self::lowerCamelCase (self::$route['action'] . 'Action');
 

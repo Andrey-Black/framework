@@ -29,9 +29,10 @@ private function getConfigFilePath (): string
 // Проверяет наличие конфигурационного файла, завершает выполнение при отсутствии
 private function checkFileConfigExists (): void
 {
-  $filePath = $this->getConfigFilePath();
-  if (!file_exists($filePath)) {
-      throw new \RuntimeException ($filePath . ' not found.');
+  $filePath = $this->getConfigFilePath ();
+  if (!file_exists ($filePath)) 
+  {
+      throw new \RuntimeException ($filePath . ' not found');
   }
 }
 

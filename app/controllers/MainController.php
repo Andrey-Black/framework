@@ -2,7 +2,9 @@
 
 namespace App\Controllers;
 
-class MainController
+use Core\Controller;
+
+class MainController extends Controller
 {
 public function indexAction ()
 {
