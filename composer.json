@@ -8,8 +8,13 @@
       "Helper\\": "app/helpers"
     }
   },
-  "require": 
-  {
-
+  "repositories": {
+    "packagist": {
+      "type": "composer",
+      "url": "https://packagist.org"
+    }
+  },
+  "require": {
+    "twig/twig": "^3.10"
   }
 }

@@ -17,6 +17,6 @@ public static function checkPhpVersion ()
 
 function dd ($data, $exit = false)
 {
-  echo '<pre>' . print_r($data, 1) . '</pre>';
-  if ($exit) exit();
+  echo '<pre>' . print_r ($data, 1) . '</pre>';
+  if ($exit) exit ();
 }

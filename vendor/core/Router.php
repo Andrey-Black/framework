@@ -47,6 +47,7 @@ protected static function removeQueryString ($url)
 public static function dispatch ($url): void
 {   
     $url = self::removeQueryString($url);
+
     if (self::findRoute($url)) 
     {
         self::handleController();
@@ -61,19 +62,21 @@ protected static function handleController (): void
 {
     $controller = 'App\\Controllers\\' . self::$route['admin_prefix'] . self::$route['controller'] . 'Controller';
 
-    if (!class_exists($controller)) {
-        self::handleNotFound("Controller {$controller} not found");
+    if (!class_exists($controller)) 
+    {
+        self::handleNotFound ("Controller {$controller} not found");
     }
 
     $controllerObject = new $controller(self::$route);
 
-    $action = self::lowerCamelCase(self::$route['action'] . 'Action');
+    $action = self::lowerCamelCase (self::$route['action'] . 'Action');
 
-    if (!method_exists($controllerObject, $action)) {
-        self::handleNotFound("Method {$controller}::{$action} not found");
+    if (!method_exists($controllerObject, $action)) 
+    {
+        self::handleNotFound ("Method {$controller}::{$action} not found");
     }
 
-    $controllerObject->$action();
+    $controllerObject->$action ();
 }
 
 protected static function handleNotFound (string $message): void
@@ -83,10 +86,12 @@ throw new \Exception($message, 404);
 
 public static function findRoute (string $url): bool
 {
-    foreach (self::$routes as $regex => $route) {
-        if (self::matchRegex($regex, $url, $route)) {
-            self::setRouteDefaults($route);
-            self::convertControllerName($route);
+    foreach (self::$routes as $regex => $route) 
+    {
+        if (self::matchRegex ($regex, $url, $route)) 
+        {
+            self::setRouteDefaults ($route);
+            self::convertControllerName ($route);
             self::$route = $route;
             return true;
         }
@@ -100,7 +105,8 @@ protected static function matchRegex (string $regex, string $url, array &$route)
 {
     if (preg_match("#{$regex}#", $url, $matches)) {
         foreach ($matches as $key => $value) {
-            if (is_string($key)) {
+            if (is_string($key)) 
+            {
                 $route[$key] = $value;
             }
         }
@@ -112,12 +118,16 @@ protected static function matchRegex (string $regex, string $url, array &$route)
 // Устанавливает значения по умолчанию для маршрута
 protected static function setRouteDefaults (array &$route): void
 {
-    if (empty($route['action'])) {
+    if (empty($route['action'])) 
+    {
         $route['action'] = 'index';
     }
-    if (!isset($route['admin_prefix'])) {
+    if (!isset($route['admin_prefix'])) 
+    {
         $route['admin_prefix'] = '';
-    } else {
+    } 
+    else 
+    {
         $route['admin_prefix'] .= '\\';
     }
 }

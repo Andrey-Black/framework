@@ -49,7 +49,8 @@ protected function initializeParams (): void
 
 private function setParams (array $params): void
 {
-    foreach ($params as $key => $value) {
+    foreach ($params as $key => $value) 
+    {
         self::$app->setProperty ($key, $value);
     }
 }

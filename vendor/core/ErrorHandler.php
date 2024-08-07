@@ -81,9 +81,9 @@ protected function getErrorTemplate ($response)
 {
     if ($response === 404 && !DEBUG) 
     {
-        return PUBLIC_DIR . '/error/404.php';
+        return PUBLIC_DIR . '/templates/error/404.php';
     } 
-    return DEBUG ? PUBLIC_DIR . '/error/development.php' : PUBLIC_DIR . '/error/production.php';
+    return DEBUG ? PUBLIC_DIR . '/templates/error/development.php' : PUBLIC_DIR . '/templates/error/production.php';
 }
 
 }
