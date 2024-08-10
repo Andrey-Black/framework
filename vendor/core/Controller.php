@@ -10,7 +10,6 @@ abstract class Controller
   public array $data = [];
 
   // Мета-теги для страницы.
-  // По умолчанию содержит пустые значения для заголовка, описания и ключевых слов.
   public array $meta = ['title' => '', 'description' => '', 'keywords' => ''];
 
   // Имя шаблона для страницы.
@@ -72,7 +71,6 @@ abstract class Controller
     $this->data = $data;
   }
 
-  // Устанавливает мета-теги для страницы.
   public function setMeta(string $title = '', string $description = '', string $keywords = ''): void
   {
     $this->meta = [

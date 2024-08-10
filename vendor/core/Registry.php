@@ -11,7 +11,7 @@ class Registry
   // Переменная для хранения свойств реестра.
   protected static array $properties = [];
 
-  // Устанавливает свойство в реестре..
+  // Устанавливает свойство в реестре.
   public function setProperty(string $name, $value): void
   {
     self::$properties[$name] = $value;
