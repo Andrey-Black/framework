@@ -2,28 +2,30 @@
 
 namespace Core;
 
-class Registry {
+use function Helper\dd;
 
-// Использует трейт для реализации паттерна Singleton
-use Singleton;
-
-// Хранит свойства, установленные в реестре
-protected static array $properties = [];
-
-public function setProperty ($name, $value): void
+class Registry
 {
+  use Singleton;
+
+  // Переменная для хранения свойств реестра.
+  protected static array $properties = [];
+
+  // Устанавливает свойство в реестре..
+  public function setProperty(string $name, $value): void
+  {
     self::$properties[$name] = $value;
-}
+  }
 
-public function getProperty ($name): array
-{
-  return self::$properties[$name] ?? null;
-}
+  // Получает значение свойства из реестра.
+  public function getProperty(string $name)
+  {
+    return self::$properties[$name] ?? null;
+  }
 
-// Возвращает все свойства из реестра
-public function getProperties (): array
-{
-  return self::$properties;
-}
-
+  // Возвращает все свойства из реестра.
+  public function getProperties(): array
+  {
+    return self::$properties;
+  }
 }

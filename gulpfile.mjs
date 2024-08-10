@@ -2,15 +2,14 @@ import { src, dest, parallel, series, watch } from 'gulp';
 import browserSync from 'browser-sync';
 import concat from 'gulp-concat';
 import uglify from 'gulp-uglify-es';
-import gulpSass from 'gulp-sass';  // Переименуйте import для gulp-sass
-import sassCompiler from 'sass';    // Импортируйте компилятор Sass
+import gulpSass from 'gulp-sass';
+import sassCompiler from 'sass';
 import autoprefixer from 'gulp-autoprefixer';
 import cleancss from 'gulp-clean-css';
 import imagemin from 'gulp-imagemin';
 import newer from 'gulp-newer';
 import { deleteAsync as del } from 'del';
 
-// Установка компилятора для gulp-sass
 const sass = gulpSass(sassCompiler);
 
 const browserSyncInstance = browserSync.create();

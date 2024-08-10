@@ -1,8 +1,6 @@
 {
-  "autoload": 
-  {
-    "psr-4": 
-    {
+  "autoload": {
+    "psr-4": {
       "Core\\": "vendor/core",
       "App\\Controllers\\": "app/controllers",
       "Helper\\": "app/helpers"

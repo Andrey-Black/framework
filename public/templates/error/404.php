@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,10 +10,12 @@
   <link rel="stylesheet" href="icons/favicon.png">
   <title>404 Not Found</title>
 </head>
+
 <body>
-  
 
 
-<script src="js/script.min.js"></script>
+
+  <script src="js/script.min.js"></script>
 </body>
+
 </html>

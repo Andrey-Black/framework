@@ -6,9 +6,5 @@ use Core\Controller;
 
 class MainController extends Controller
 {
-public function indexAction ()
-{
-  echo '<br>' . __METHOD__;
-}
-
+  public function indexAction() {}
 }

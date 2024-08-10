@@ -2,11 +2,9 @@
 
 namespace App\Controllers\Admin;
 
-class MainController
-{
-public function indexAction ()
-{
-  echo 'ADMIN <br>' . __METHOD__;
-}
+use Core\Controller;
 
+class MainController extends Controller
+{
+  public function indexAction() {}
 }

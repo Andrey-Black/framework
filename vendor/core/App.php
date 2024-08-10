@@ -2,58 +2,68 @@
 
 namespace Core;
 
+use function Helper\dd;
+
 class App
 {
-// Хранит экземпляр приложения
-public static $app;
+  // Переменная для хранения единственого экземпляра приложения.
+  public static $app;
 
-public function __construct ()
-{
-
-  // Получение очищенного URL запроса
-  $query = trim(urldecode($_SERVER['REQUEST_URI']), '/');
-  self::$app = Registry::getInstance ();
-
-  // Инициализация параметров приложения
-  $this->initializeParams ();
-
-    // Поиск маршрута на основе запроса
-  Router::dispatch ($query);
-}
-
-private function getConfigFilePath (): string
-{
-  return CONFIG . '/params.php';
-}
-
-// Проверяет наличие конфигурационного файла, завершает выполнение при отсутствии
-private function checkFileConfigExists (): void
-{
-  $filePath = $this->getConfigFilePath ();
-  if (!file_exists ($filePath)) 
+  // Конструктор получает очищенный URL запроса, 
+  // инициализирует параметры приложения,
+  // передает запрос маршрутизатору.
+  public function __construct()
   {
-      throw new \RuntimeException ($filePath . ' not found');
+    $query = (string) trim(urldecode($_SERVER['REQUEST_URI']), '/');
+
+    self::$app = Registry::getInstance();
+
+    $this->initializeParams();
+
+    Router::dispatch($query);
   }
-}
 
-private function loadConfigFile (): array
-{
-  $this->checkFileConfigExists ();
-  return require $this->getConfigFilePath ();
-}
+  private function getConfigFilePath(): string
+  {
+    return CONFIG . '/params.php';
+  }
 
-protected function initializeParams (): void
-{
-    $params = $this->loadConfigFile ();
-    $this->setParams ($params);
-}
-
-private function setParams (array $params): void
-{
-    foreach ($params as $key => $value) 
-    {
-        self::$app->setProperty ($key, $value);
+  private function checkFileConfigExists(): void
+  {
+    $filePath = $this->getConfigFilePath();
+    if (!file_exists($filePath)) {
+      throw new \RuntimeException($filePath . ' not found');
     }
-}
+  }
 
+  private function loadConfigFile(): array
+  {
+    $this->checkFileConfigExists();
+    return require $this->getConfigFilePath();
+  }
+
+  protected function initializeParams(): void
+  {
+    $params = $this->fetchParams();
+    $this->applyParams($params);
+  }
+
+  // Получает параметры из конф файла.
+  private function fetchParams(): array
+  {
+    return $this->loadConfigFile();
+  }
+
+  // Принимает эти параметры и передаёт их в setParams для установки.
+  private function applyParams(array $params): void
+  {
+    $this->setParams($params);
+  }
+
+  private function setParams(array $params): void
+  {
+    foreach ($params as $key => $value) {
+      self::$app->setProperty($key, $value);
+    }
+  }
 }

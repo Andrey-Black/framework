@@ -1,40 +1,40 @@
-version: '3'  # Указывает версию синтаксиса Docker Compose
+version: '3' # Указывает версию синтаксиса Docker Compose
 
 services:
   php:
-    build: .  # Строит Docker-образ для PHP из текущей директории, где находится Dockerfile
-    container_name: php_8.3  # Имя контейнера для сервиса PHP
+    build: . # Строит Docker-образ для PHP из текущей директории, где находится Dockerfile
+    container_name: php_8.3 # Имя контейнера для сервиса PHP
     ports:
-      - "8080:80"  # Пробрасывает порт 80 контейнера на порт 8080 хоста
-      - "443:443"  # Пробрасывает порт 443 контейнера на порт 443 хоста
+      - "8080:80" # Пробрасывает порт 80 контейнера на порт 8080 хоста
+      - "443:443" # Пробрасывает порт 443 контейнера на порт 443 хоста
     volumes:
-      - ./:/var/www/html  # Монтирует текущую директорию на /var/www/html в контейнере для обмена данными
+      - ./:/var/www/html # Монтирует текущую директорию на /var/www/html в контейнере для обмена данными
 
   db:
-    image: mysql:8.0  # Использует образ MySQL версии 8.0 из Docker Hub
-    container_name: mysql_8.0  # Имя контейнера для сервиса MySQL
-    restart: always  # Перезапускает контейнер в случае сбоя
+    image: mysql:8.0 # Использует образ MySQL версии 8.0 из Docker Hub
+    container_name: mysql_8.0 # Имя контейнера для сервиса MySQL
+    restart: always # Перезапускает контейнер в случае сбоя
     environment:
-      MYSQL_ROOT_PASSWORD: root  # Устанавливает пароль для root пользователя MySQL
-      MYSQL_DATABASE: framework_db  # Создает базу данных с именем framework_db
-      MYSQL_USER: user  # Создает нового пользователя MySQL
-      MYSQL_PASSWORD: root  # Устанавливает пароль для нового пользователя
+      MYSQL_ROOT_PASSWORD: root # Устанавливает пароль для root пользователя MySQL
+      MYSQL_DATABASE: framework_db # Создает базу данных с именем framework_db
+      MYSQL_USER: user # Создает нового пользователя MySQL
+      MYSQL_PASSWORD: root # Устанавливает пароль для нового пользователя
     ports:
-      - "3306:3306"  # Пробрасывает порт 3306 контейнера на порт 3306 хоста
+      - "3306:3306" # Пробрасывает порт 3306 контейнера на порт 3306 хоста
     volumes:
-      - db_data:/var/lib/mysql  # Монтирует volume db_data для хранения данных базы данных
+      - db_data:/var/lib/mysql # Монтирует volume db_data для хранения данных базы данных
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin  # Использует образ phpMyAdmin из Docker Hub
-    container_name: phpmyadmin_last  # Имя контейнера для сервиса phpMyAdmin
-    restart: always  # Перезапускает контейнер в случае сбоя
+    image: phpmyadmin/phpmyadmin # Использует образ phpMyAdmin из Docker Hub
+    container_name: phpmyadmin_last # Имя контейнера для сервиса phpMyAdmin
+    restart: always # Перезапускает контейнер в случае сбоя
     ports:
-      - "8081:80"  # Пробрасывает порт 80 контейнера на порт 8081 хоста
+      - "8081:80" # Пробрасывает порт 80 контейнера на порт 8081 хоста
     environment:
-      PMA_HOST: db  # Указывает, что phpMyAdmin должен подключаться к контейнеру db
-      MYSQL_ROOT_PASSWORD: root  # Устанавливает пароль для root пользователя MySQL в phpMyAdmin
+      PMA_HOST: db # Указывает, что phpMyAdmin должен подключаться к контейнеру db
+      MYSQL_ROOT_PASSWORD: root # Устанавливает пароль для root пользователя MySQL в phpMyAdmin
     depends_on:
-      - db  # Обеспечивает, что контейнер phpmyadmin запускается только после контейнера db
+      - db # Обеспечивает, что контейнер phpmyadmin запускается только после контейнера db
 
 volumes:
-  db_data:  # Определяет volume db_data для постоянного хранения данных базы данных
+  db_data: # Определяет volume db_data для постоянного хранения данных базы данных
