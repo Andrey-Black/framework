@@ -6,7 +6,8 @@ use Core\Controller;
 
 class MainController extends Controller
 {
-  public function indexAction() {
-    $this->layout = 'about_test';
+  public function indexAction()
+  {
+    $this->setMeta('Главная страница', 'Описание', 'Ключевые слова');
   }
 }

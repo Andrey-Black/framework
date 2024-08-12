@@ -6,33 +6,19 @@ use function Helper\dd;
 
 abstract class Controller
 {
-  // Содержит данные из модели, которые мы передаем в View.
   public array $data = [];
-
-  // Мета-теги для страницы.
   public array $meta = ['title' => '', 'description' => '', 'keywords' => ''];
-
-  // Имя шаблона для страницы.
-  // Может быть false, если шаблон не нужен.
   public false|string $layout = '';
-
-  // Название вида (view).
-  // По умолчанию соответствует названию экшена.
   public string $view = '';
-
-  // Экземпляр модели, используемой в контроллере.
   public object $model;
 
-  // Конструктор контроллера.
-  // Принимает маршрут как параметр.
-  public function __construct(public $route = []) {}
+  public function __construct(public array $route = []) {}
 
   public function getModel(): void
   {
     $this->createModelInstance();
   }
 
-  // Модель может быть пользовательской или админской, поэтому может быть передан admin_prefix.
   protected function getModelClassName(): string
   {
     return 'App\Models\\' . $this->route['admin_prefix'] . $this->route['controller'];
@@ -48,9 +34,7 @@ abstract class Controller
 
   public function getView(): void
   {
-    // Если вид не установлен, использовать экшен из маршрута.
     $this->view = $this->view ?: $this->route['action'];
-
     $view = $this->createView();
     $this->renderView($view);
   }
@@ -65,8 +49,7 @@ abstract class Controller
     $view->render($this->data);
   }
 
-  // Устанавливает данные для передачи в представление (view).
-  public function set(array $data): void
+  public function setData(array $data): void
   {
     $this->data = $data;
   }

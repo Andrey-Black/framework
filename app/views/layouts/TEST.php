@@ -14,7 +14,7 @@ use function Helper\dd;
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About</title>
+  <?php echo $this->getMeta(); ?>
 </head>
 
 <body>

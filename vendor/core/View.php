@@ -6,43 +6,101 @@ use function Helper\dd;
 
 class View
 {
-  // 
   public string $content = '';
 
-  public function __construct(public $route, public $layout = '', public $view = '', $meta = [])
+  public function __construct(
+    public array $route,
+    public string $layout = '',
+    public string $view = '',
+    public array $meta = []
+  ) {
+    $this->initializeLayout();
+  }
+
+  private function initializeLayout(): void
   {
     if (false !== $this->layout) {
-      // Если $this->layout пуст, будет использовано значение константы.
       $this->layout = $this->layout ?: LAYOUT;
     }
   }
 
-  public function render($data)
+  public function render(array $data): void
   {
-    if (is_array($data)) {
+    $this->extractData($data);
+    $this->renderView();
+    $this->renderLayout();
+  }
+
+  private function extractData(array $data): void
+  {
+    if (!empty($data)) {
       extract($data);
     }
-    // $prefix замена слеша на коректный для пути
-    $prefix = str_replace('\\', '/', $this->route['admin_prefix']);
+  }
 
-    $viewFile = APP . "/views/{$prefix}{$this->route['controller']}/{$this->view}.php";
+  private function renderView(): void
+  {
+    $viewFile = $this->getViewFilePath();
+
     if (is_file($viewFile)) {
-      // Буферизация вывода страницы и запись результата буферизации в content
-      ob_start();
-      require $viewFile;
-      $this->content = ob_get_clean();
+      $this->content = $this->getBufferedContent($viewFile);
     } else {
-      throw new \Exception("View not found {$viewFile}", 404);
+      $this->handleMissingFile($viewFile, 'View');
     }
+  }
 
+  private function renderLayout(): void
+  {
     if (false !== $this->layout) {
-      $layoutFile = APP . "/views/layouts/{$this->layout}.php";
+      $layoutFile = $this->getLayoutFilePath();
 
       if (is_file($layoutFile)) {
         require $layoutFile;
       } else {
-        throw new \Exception("Template not found {$layoutFile}", 404);
+        $this->handleMissingFile($layoutFile, 'Template');
       }
     }
+  }
+
+  private function getViewFilePath(): string
+  {
+    $prefix = $this->getRoutePrefix();
+    return APP . "/views/{$prefix}{$this->route['controller']}/{$this->view}.php";
+  }
+
+  private function getLayoutFilePath(): string
+  {
+    return APP . "/views/layouts/{$this->layout}.php";
+  }
+
+  private function getRoutePrefix(): string
+  {
+    return str_replace('\\', '/', $this->route['admin_prefix']);
+  }
+
+  private function getBufferedContent(string $filePath): string
+  {
+    ob_start();
+    require $filePath;
+    return ob_get_clean();
+  }
+
+  private function handleMissingFile(string $filePath, string $fileType): void
+  {
+    throw new \Exception("{$fileType} not found: {$filePath}", 404);
+  }
+
+  public function getMeta(): string
+  {
+    return $this->generateMetaTags();
+  }
+
+  private function generateMetaTags(): string
+  {
+    return <<<META
+        <title>{$this->meta['title']}</title>
+        <meta name="description" content="{$this->meta['description']}">
+        <meta name="keywords" content="{$this->meta['keywords']}">
+        META;
   }
 }

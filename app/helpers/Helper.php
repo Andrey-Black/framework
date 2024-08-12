@@ -13,14 +13,8 @@ class Helper
   }
 }
 
-/**
- * Выводит отладочную информацию и завершает выполнение скрипта.
- *
- * @param mixed $data Данные для вывода.
- * @param bool $exit Если true, скрипт завершает выполнение после вывода данных.
- */
 function dd($data, $exit = false)
 {
-    echo '<pre>' . htmlspecialchars(print_r($data, true)) . '</pre>';
-    if ($exit) exit();
+  echo '<pre>' . htmlspecialchars(print_r($data, true)) . '</pre>';
+  if ($exit) exit();
 }
