@@ -27,9 +27,22 @@ class View
 
     $viewFile = APP . "/views/{$prefix}{$this->route['controller']}/{$this->view}.php";
     if (is_file($viewFile)) {
+      // Буферизация вывода страницы и запись результата буферизации в content
+      ob_start();
       require $viewFile;
+      $this->content = ob_get_clean();
     } else {
-      throw new \Exception("View not found {$viewFile}");
+      throw new \Exception("View not found {$viewFile}", 404);
+    }
+
+    if (false !== $this->layout) {
+      $layoutFile = APP . "/views/layouts/{$this->layout}.php";
+
+      if (is_file($layoutFile)) {
+        require $layoutFile;
+      } else {
+        throw new \Exception("Template not found {$layoutFile}", 404);
+      }
     }
   }
 }
